@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Logo from "../../public/Swah Ai 02.png";
+import Logo from "../../public/images/Swah Ai 02.png";
 
 const Header = () => {
   return (
