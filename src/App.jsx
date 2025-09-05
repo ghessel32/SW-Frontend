@@ -396,8 +396,8 @@ function App() {
     return `Write a ${contentTypeDisplay} on idea: (e.g., "productivity tips for remote workers")`;
   };
 
-  // Add this at the top with your other constants
-  const API_BASE_URL = "https://sw-backend-4wqo.onrender.com/api";
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "https://sw-backend-4wqo.onrender.com/api";
 
   // REPLACE your existing handleGenerate function with this:
   const handleGenerate = async () => {
@@ -490,15 +490,15 @@ function App() {
     }
   };
 
- const copyToClipboard = () => {
-  navigator.clipboard.writeText(generatedContent);
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(generatedContent);
 
-  setIsCopied(true);
-  setTimeout(() => {
-    setIsCopied(false);
-    setShowFeedbackForm(true); // trigger once "Copied" disappears
-  }, 1000);
-};
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+      setShowFeedbackForm(true); // trigger once "Copied" disappears
+    }, 1000);
+  };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -516,22 +516,22 @@ function App() {
     <div>
       <Header />
       <HeroSection />
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 p-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 p-3 sm:p-6">
+        <div className="max-w-7xl mx-auto"> {/* Increased max width from 4xl to 7xl */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Wand2 className="w-8 h-8 text-purple-600" />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 AI Content Generator
               </h1>
             </div>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-base sm:text-lg">
               Create engaging content for any platform with AI-powered
               assistance
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl p-8 border border-purple-100">
+          <div className="bg-white rounded-3xl shadow-2xl p-4 sm:p-8 border border-purple-100">
             {/* Content Type Search */}
             <div className="space-y-3 mb-8">
               <label className="block text-sm font-semibold text-gray-700">
@@ -680,7 +680,7 @@ function App() {
             {/* Instruction Card - Show only when content type is selected */}
             {selectedCombo && (
               <div className="mt-8 mb-6">
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-200 p-6">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-200 p-4 sm:p-6">
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0">
                       <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
@@ -691,7 +691,7 @@ function App() {
                       <h3 className="text-lg font-semibold text-gray-800 mb-3">
                         Pro Tips for Better Content
                       </h3>
-                      <div className="grid md:grid-cols-3 gap-4">
+                      <div className="grid sm:grid-cols-3 gap-4">
                         <div className="flex items-start gap-3">
                           <Users className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
                           <div>
@@ -736,7 +736,7 @@ function App() {
             {/* Error Card */}
             {showError && (
               <div className="mt-6 mb-6">
-                <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl border border-red-200 p-6">
+                <div className="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl border border-red-200 p-4 sm:p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0">
@@ -762,16 +762,27 @@ function App() {
               </div>
             )}
 
-{/* Warning Message - Compact Version */}
-  <div className="flex items-center space-x-2 text-sm text-gray-600">
-    <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-    </svg>
-    <p>
-      <span className="font-medium">Tip:</span> Don't start with "write a..." - just describe your idea directly. 
-      <span className="text-gray-500">e.g., "Blog post about sustainable fashion"</span>
-    </p>
-  </div>
+            {/* Warning Message - Compact Version */}
+            <div className="flex items-center space-x-2 text-sm text-gray-600 mb-4">
+              <svg
+                className="w-4 h-4 text-blue-500 flex-shrink-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p>
+                <span className="font-medium">Tip:</span> Don't start with
+                "write a..." - just describe your idea directly.
+                <span className="text-gray-500 hidden sm:inline">
+                  {" "}e.g., "Blog post about sustainable fashion"
+                </span>
+              </p>
+            </div>
 
             {/* Prompt Input */}
             <div className="mt-8 space-y-3">
@@ -794,17 +805,19 @@ function App() {
                 disabled={
                   isGenerating || !formData.contentCombo || !formData.prompt
                 }
-                className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
+                className="flex items-center gap-3 px-6 sm:px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl font-semibold text-base sm:text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl"
               >
                 {isGenerating ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Generating...
+                    <span className="hidden sm:inline">Generating...</span>
+                    <span className="sm:hidden">...</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5" />
-                    Generate Content
+                    <span className="hidden sm:inline">Generate Content</span>
+                    <span className="sm:hidden">Generate</span>
                   </>
                 )}
               </button>
@@ -812,17 +825,18 @@ function App() {
 
             {/* Output Section */}
             {generatedContent && (
-              <div className="space-y-8">
+              <div className="space-y-8 mt-12">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Sparkles className="w-6 h-6 text-purple-500" />
-                    <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    <h3 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                       Generated Content
                     </h3>
                   </div>
+                  {/* Responsive Copy Button */}
                   <button
                     onClick={copyToClipboard}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105 ${
+                    className={`flex items-center gap-2 px-4 sm:px-6 py-3 rounded-full transition-all font-medium shadow-lg hover:shadow-xl transform hover:scale-105 ${
                       isCopied
                         ? "bg-gradient-to-r from-emerald-400 to-green-500 text-white"
                         : "bg-white hover:bg-gray-50 text-gray-700 border border-gray-200"
@@ -831,19 +845,19 @@ function App() {
                     {isCopied ? (
                       <>
                         <Check className="w-4 h-4" />
-                        Copied!
+                        <span className="hidden sm:inline">Copied!</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-4 h-4" />
-                        Copy
+                        <span className="hidden sm:inline">Copy</span>
                       </>
                     )}
                   </button>
                 </div>
 
                 {/* Beautiful Content Display */}
-                <div className="relative bg-white rounded-3xl p-8 shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="relative bg-white rounded-3xl p-4 sm:p-8 shadow-2xl border border-gray-100 overflow-hidden">
                   {/* Decorative header */}
                   <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                     <div className="flex items-center gap-3">
@@ -851,7 +865,7 @@ function App() {
                       <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full shadow-lg"></div>
                       <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
                     </div>
-                    <div className="text-xs text-gray-400 font-mono">
+                    <div className="text-xs text-gray-400 font-mono hidden sm:block">
                       content.txt
                     </div>
                   </div>
@@ -885,22 +899,23 @@ function App() {
                   <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
                 </div>
 
-                {/* Beautiful Chat Input for Editing */}
-                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 backdrop-blur-sm">
+                {/* Beautiful Chat Input for Editing - Now Responsive */}
+                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-4 sm:p-6 backdrop-blur-sm">
                   <div className="mb-4">
-                    <h4 className="text-gray-800 font-bold text-lg flex items-center gap-3">
+                    <h4 className="text-gray-800 font-bold text-base sm:text-lg flex items-center gap-3">
                       <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl">
-                        <Wand2 className="w-5 h-5 text-white" />
+                        <Wand2 className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                       </div>
                       Ask AI to Edit Content
                     </h4>
-                    <p className="text-gray-500 mt-2 ml-12">
+                    <p className="text-gray-500 mt-2 text-sm sm:text-base sm:ml-12">
                       Request changes, improvements, or different variations of
                       your content
                     </p>
                   </div>
 
-                  <div className="flex gap-4">
+                  {/* Responsive Chat Layout */}
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-1 relative">
                       <input
                         type="text"
@@ -918,14 +933,14 @@ function App() {
                     <button
                       onClick={handleChatSubmit}
                       disabled={!chatInput.trim() || isChatLoading}
-                      className="px-6 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-2xl hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-105 font-medium"
+                      className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-2xl hover:from-purple-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-105 font-medium"
                     >
                       {isChatLoading ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       ) : (
                         <>
                           <Send className="w-5 h-5" />
-                          Send
+                          <span className="hidden sm:inline">Send</span>
                         </>
                       )}
                     </button>
